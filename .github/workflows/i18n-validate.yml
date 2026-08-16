@@ -1,0 +1,42 @@
+name: i18n-validate
+
+# Every language pack in i18n/ is checked on push and on pull requests, so a
+# contributor sees a placeholder error on their own PR rather than hearing about
+# it in review. Missing keys never fail: a partial translation is a valid
+# translation, since every untranslated key renders in English.
+
+on:
+  push:
+    paths:
+      - 'i18n/**'
+      - '.github/workflows/i18n-validate.yml'
+  pull_request:
+    paths:
+      - 'i18n/**'
+      - '.github/workflows/i18n-validate.yml'
+
+jobs:
+  packs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate every pack against the English base
+        run: |
+          cd i18n
+          python validate.py $(ls *.json | grep -v '^en.json$')
+
+  base:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: The English base must be well-formed and complete
+        run: |
+          cd i18n
+          python - <<'EOF'
+          import json
+          pack = json.load(open('en.json'))
+          strings = {k: v for k, v in pack.items() if not k.startswith('_')}
+          assert len(strings) > 400, f'only {len(strings)} keys in the base'
+          assert pack['_meta']['code'] == 'en'
+          print(f'English base OK - {len(strings)} keys')
+          EOF

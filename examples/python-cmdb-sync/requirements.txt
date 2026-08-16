@@ -1,0 +1,1 @@
+confida-integra-client>=0.1.0

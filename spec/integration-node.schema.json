@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://confida.solutions/spec/integration-node.schema.json",
+  "title": "IntegrationNode",
+  "description": "A single integration record as returned by the Confida Integra northbound API (GET /api/v1/integrations and /integrations/{id}). Normalised across all sources (OpenShift, Proxmox, ...).",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "source_system", "destination_system", "protocol", "environment", "status", "source"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Deterministic fingerprint of the integration's core attributes (source, destination, data model, protocol, environment). Stable while those attributes are unchanged.",
+      "examples": ["a1b2c3d4e5f60718"]
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable display name."
+    },
+    "namespace": {
+      "type": "string",
+      "description": "Originating namespace / project (OpenShift) or source reference (e.g. 'proxmox:node/vmid')."
+    },
+    "source_system": {
+      "type": "string",
+      "description": "Name of the source system of the flow."
+    },
+    "destination_system": {
+      "type": "string",
+      "description": "Name of the destination system of the flow."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Technical owner (person or team)."
+    },
+    "owner_email": {
+      "type": "string",
+      "description": "Technical owner email."
+    },
+    "data_owner": {
+      "type": "string",
+      "description": "Data steward / owning team."
+    },
+    "data_owner_email": {
+      "type": "string"
+    },
+    "data_model_name": {
+      "type": "string",
+      "description": "Data model(s); may be a semicolon-separated list."
+    },
+    "data_model_schema_url": {
+      "type": "string",
+      "description": "Optional URL to the data model schema."
+    },
+    "endpoint_url": {
+      "type": "string"
+    },
+    "protocol": {
+      "type": "string",
+      "description": "Composed as 'source-interface → destination-interface', or a single interface when only one side is set.",
+      "examples": ["rest-json → sql", "kafka-topic"]
+    },
+    "node_type": {
+      "type": "string",
+      "description": "Workload type marker; 'integration' for integration records."
+    },
+    "environment": {
+      "type": "string",
+      "description": "Deployment environment. The API accepts the short forms (prod/dev/test/qa) as synonyms in filters.",
+      "enum": ["dev", "test", "qa", "production"]
+    },
+    "data_classification": {
+      "type": "string",
+      "enum": ["", "public", "internal", "confidential", "secret"]
+    },
+    "gdpr_basis": {
+      "type": "string",
+      "description": "Legal basis for GDPR processing (free text)."
+    },
+    "docs_url": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "description": "Discovery source. New source values may be added over time (additive, non-breaking).",
+      "examples": ["openshift", "proxmox"]
+    },
+    "last_seen": {
+      "type": "string",
+      "description": "ISO-8601 timestamp the integration was last observed.",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "stale", "deprecated"]
+    },
+    "missing_since": {
+      "type": "string",
+      "description": "ISO-8601 timestamp from which no configured source has observed this integration. Empty (or absent) when it was seen in the most recent successful collection. Orthogonal to `status`: an integration can be both deprecated and no longer observed.",
+      "examples": ["", "2026-08-03T09:14:22Z"]
+    },
+    "extra": {
+      "type": "object",
+      "description": "Source-specific and supplementary fields. Consumers should treat unknown keys as additive.",
+      "additionalProperties": true,
+      "properties": {
+        "version": { "type": "string" },
+        "criticality": {
+          "type": "string",
+          "enum": ["", "low", "medium", "high", "critical"]
+        },
+        "org": { "type": "string" },
+        "team": { "type": "string" },
+        "created": {
+          "type": "string",
+          "description": "Creation timestamp from the source.",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

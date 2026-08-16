@@ -1,0 +1,29 @@
+name: lint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  json-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JSON Schema is well-formed
+        run: python -c "import json; json.load(open('spec/integration-node.schema.json')); print('schema OK')"
+
+  yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: yamllint
+        run: |
+          pip install yamllint
+          yamllint -d "{extends: relaxed, rules: {line-length: disable}}" spec charts examples
+
+  markdown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: markdownlint
+        run: npx --yes markdownlint-cli2 "**/*.md" "#sdk/python/**"

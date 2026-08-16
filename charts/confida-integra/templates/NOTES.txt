@@ -1,0 +1,9 @@
+⚠  This is the SKELETON Confida Integra chart — dashboard Deployment + Service
+   only. It is NOT production-ready (no collector, secrets, persistence, RBAC or
+   ingress). See the chart README before relying on it.
+
+The dashboard Service "{{ include "confida-integra.fullname" . }}" listens on
+port {{ .Values.service.port }}. Port-forward to try it:
+
+    kubectl port-forward svc/{{ include "confida-integra.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+    open http://localhost:{{ .Values.service.port }}

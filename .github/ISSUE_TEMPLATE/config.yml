@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/ConfidaSolutions/confida-integra/blob/main/SECURITY.md
+    about: Do NOT open a public issue for security problems — follow SECURITY.md.
+  - name: Commercial / product questions
+    url: https://confida.solutions
+    about: Sales, licensing, and product support are handled on the vendor site.

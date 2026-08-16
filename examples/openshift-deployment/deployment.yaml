@@ -1,0 +1,59 @@
+# Reference OpenShift manifests that make an integration discoverable.
+#
+# Copy, replace the `ict.example.org/` prefix with the one your Confida
+# Integra deployment is configured with, and `oc apply -f deployment.yaml`.
+#
+# The Project (namespace) is the discovery unit: the collector reads its labels
+# and annotations. The Deployment is included only to show a realistic workload
+# carrying the same labels for housekeeping; the collector keys on the Project.
+---
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: hr-sap-to-aspa-prod
+  annotations:
+    openshift.io/display-name: "HR SAP → ASPA"
+    ict.example.org/source-system: SAP
+    ict.example.org/destination-system: ASPA
+    ict.example.org/source-interface: rest-json
+    ict.example.org/destination-interface: soap
+    ict.example.org/owner-name: Jane Smith
+    ict.example.org/owner-email: jane@example.org
+    ict.example.org/data-owner: HR Services
+    ict.example.org/data-classification: confidential
+    ict.example.org/gdpr-basis: legal-obligation
+    ict.example.org/data-models: EmployeeRecord
+    ict.example.org/description: Transfers HR changes from SAP to ASPA
+    ict.example.org/docs: https://wiki.example.org/integrations/hr-sap-aspa
+  labels:
+    ict.example.org/app-type: integration
+    ict.example.org/team: integration
+    team: integration
+    ict.example.org/environment: production
+    ict.example.org/criticality: high
+    ict.example.org/org: hr
+    app.kubernetes.io/version: "2.1.0"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hr-sap-aspa-bridge
+  namespace: hr-sap-to-aspa-prod
+  labels:
+    app.kubernetes.io/name: hr-sap-aspa-bridge
+    app.kubernetes.io/version: "2.1.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hr-sap-aspa-bridge
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hr-sap-aspa-bridge
+    spec:
+      containers:
+        - name: bridge
+          image: registry.example.org/hr/hr-sap-aspa-bridge:2.1.0
+          ports:
+            - containerPort: 8080

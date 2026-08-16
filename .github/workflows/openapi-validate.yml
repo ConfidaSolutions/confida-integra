@@ -1,0 +1,15 @@
+name: openapi-validate
+
+on:
+  push:
+    paths: ["spec/openapi.yaml", ".github/workflows/openapi-validate.yml"]
+  pull_request:
+    paths: ["spec/openapi.yaml", ".github/workflows/openapi-validate.yml"]
+
+jobs:
+  spectral:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint OpenAPI with Spectral
+        run: npx --yes @stoplight/spectral-cli lint spec/openapi.yaml --ruleset spectral:oas

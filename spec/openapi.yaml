@@ -1,0 +1,311 @@
+openapi: 3.1.0
+info:
+  title: Confida Integra — Northbound API
+  version: "1.0"
+  summary: Read-only pull interface for the live integration register.
+  description: |
+    Public northbound API (`/api/v1`) of Confida Integra. Bearer-token
+    authenticated, read-only, paged, filterable, with strong `ETag` caching.
+
+    This document is the **public contract**. It intentionally covers only the
+    stable, externally-supported endpoints: `/integrations`, `/integrations/{id}`,
+    `/stats` and `/meta`. The product also serves `/systems` endpoints, which are
+    **not yet part of the public contract** (see `versioning-policy.md`).
+  license:
+    name: CC-BY-4.0
+    url: https://creativecommons.org/licenses/by/4.0/
+  contact:
+    name: Confida Solutions Oy
+    email: info@confida.solutions
+
+servers:
+  - url: https://your-host
+    description: Your Confida Integra deployment (replace with the real base URL)
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: northbound-api
+    description: Read-only integration register
+
+paths:
+  /api/v1/integrations:
+    get:
+      tags: [northbound-api]
+      operationId: listIntegrations
+      summary: Paged, filterable list of integrations
+      parameters:
+        - { $ref: "#/components/parameters/env" }
+        - { $ref: "#/components/parameters/status" }
+        - { $ref: "#/components/parameters/criticality" }
+        - { $ref: "#/components/parameters/source" }
+        - name: system
+          in: query
+          description: Match integrations whose source or destination system contains this value.
+          schema: { type: string }
+        - name: team
+          in: query
+          schema: { type: string }
+        - name: updated_since
+          in: query
+          description: RFC 3339 timestamp; return only integrations seen at or after this time.
+          schema: { type: string, format: date-time }
+        - name: fields
+          in: query
+          description: Comma-separated allow-list of fields to project into each record.
+          schema: { type: string }
+        - { $ref: "#/components/parameters/page" }
+        - { $ref: "#/components/parameters/per_page" }
+        - { $ref: "#/components/parameters/ifNoneMatch" }
+      responses:
+        "200":
+          description: A page of integrations.
+          headers:
+            ETag: { $ref: "#/components/headers/ETag" }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/IntegrationListResponse" }
+        "304": { $ref: "#/components/responses/NotModified" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /api/v1/integrations/{integration_id}:
+    get:
+      tags: [northbound-api]
+      operationId: getIntegration
+      summary: A single integration by id
+      parameters:
+        - name: integration_id
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: "#/components/parameters/ifNoneMatch" }
+      responses:
+        "200":
+          description: The integration.
+          headers:
+            ETag: { $ref: "#/components/headers/ETag" }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/IntegrationResponse" }
+        "304": { $ref: "#/components/responses/NotModified" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /api/v1/stats:
+    get:
+      tags: [northbound-api]
+      operationId: getStats
+      summary: Aggregate counts by status / environment / criticality / source
+      parameters:
+        - { $ref: "#/components/parameters/ifNoneMatch" }
+      responses:
+        "200":
+          description: Aggregate statistics.
+          headers:
+            ETag: { $ref: "#/components/headers/ETag" }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StatsResponse" }
+        "304": { $ref: "#/components/responses/NotModified" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /api/v1/meta:
+    get:
+      tags: [northbound-api]
+      operationId: getMeta
+      summary: API / schema / product version and data-source descriptor
+      responses:
+        "200":
+          description: API metadata.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MetaResponse" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: cnf_v1
+      description: >
+        Per-consumer API token issued in the admin UI. Send as
+        `Authorization: Bearer cnf_v1_<id><secret>`.
+
+  parameters:
+    env:
+      name: env
+      in: query
+      description: Environment filter. Accepts canonical (`production`) and short (`prod`) forms; repeatable.
+      schema:
+        type: array
+        items: { type: string, enum: [dev, test, qa, production, prod] }
+      style: form
+      explode: true
+    status:
+      name: status
+      in: query
+      schema:
+        type: array
+        items: { type: string, enum: [active, stale, deprecated] }
+      style: form
+      explode: true
+    criticality:
+      name: criticality
+      in: query
+      schema:
+        type: array
+        items: { type: string, enum: [low, medium, high, critical] }
+      style: form
+      explode: true
+    source:
+      name: source
+      in: query
+      description: Discovery source filter (e.g. `openshift`, `proxmox`).
+      schema: { type: string }
+    page:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 1, default: 1 }
+    per_page:
+      name: per_page
+      in: query
+      description: Items per page (default 100, server-configurable maximum, commonly 500).
+      schema: { type: integer, minimum: 1, default: 100 }
+    ifNoneMatch:
+      name: If-None-Match
+      in: header
+      description: Cached ETag; the server returns 304 when the data is unchanged.
+      schema: { type: string }
+
+  headers:
+    ETag:
+      description: Strong validator for the current dataset; echo it back via If-None-Match.
+      schema: { type: string }
+
+  responses:
+    NotModified:
+      description: The dataset has not changed since the supplied ETag.
+    BadRequest:
+      description: Invalid query parameter.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Unauthorized:
+      description: Missing or invalid bearer token.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: No integration with that id.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    TooManyRequests:
+      description: Per-token rate limit exceeded.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        detail: { type: string }
+
+    IntegrationNode:
+      type: object
+      description: See integration-node.schema.json for the authoritative schema.
+      required: [id, source_system, destination_system, protocol, environment, status, source]
+      additionalProperties: true
+      properties:
+        id: { type: string }
+        name: { type: string }
+        namespace: { type: string }
+        source_system: { type: string }
+        destination_system: { type: string }
+        owner: { type: string }
+        owner_email: { type: string }
+        data_owner: { type: string }
+        data_owner_email: { type: string }
+        data_model_name: { type: string }
+        data_model_schema_url: { type: string }
+        endpoint_url: { type: string }
+        protocol: { type: string }
+        node_type: { type: string }
+        environment: { type: string, enum: [dev, test, qa, production] }
+        data_classification: { type: string }
+        gdpr_basis: { type: string }
+        docs_url: { type: string }
+        description: { type: string }
+        source: { type: string }
+        last_seen: { type: string, format: date-time }
+        status: { type: string, enum: [active, stale, deprecated] }
+        extra:
+          type: object
+          additionalProperties: true
+
+    Pagination:
+      type: object
+      properties:
+        page: { type: integer }
+        per_page: { type: integer }
+        total_items: { type: integer }
+        total_pages: { type: integer }
+
+    Links:
+      type: object
+      properties:
+        self: { type: string }
+        first: { type: string }
+        last: { type: string }
+        prev: { type: [string, "null"] }
+        next: { type: [string, "null"] }
+
+    IntegrationListResponse:
+      type: object
+      required: [data, pagination, links, generated_at]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/IntegrationNode" }
+        pagination: { $ref: "#/components/schemas/Pagination" }
+        links: { $ref: "#/components/schemas/Links" }
+        generated_at: { type: string, format: date-time }
+
+    IntegrationResponse:
+      type: object
+      required: [data, generated_at]
+      properties:
+        data: { $ref: "#/components/schemas/IntegrationNode" }
+        generated_at: { type: string, format: date-time }
+
+    StatsResponse:
+      type: object
+      required: [data, generated_at]
+      properties:
+        data:
+          type: object
+          properties:
+            total_integrations: { type: integer }
+            total_systems: { type: integer }
+            by_status: { type: object, additionalProperties: { type: integer } }
+            by_environment: { type: object, additionalProperties: { type: integer } }
+            by_criticality: { type: object, additionalProperties: { type: integer } }
+            by_source: { type: object, additionalProperties: { type: integer } }
+        generated_at: { type: string, format: date-time }
+
+    MetaResponse:
+      type: object
+      properties:
+        api_version: { type: string }
+        schema_version: { type: integer }
+        product_version: { type: string }
+        data_source: { type: string }
+        node_count: { type: integer }
+        generated_at: { type: string, format: date-time }

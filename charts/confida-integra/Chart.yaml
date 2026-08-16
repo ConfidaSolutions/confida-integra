@@ -1,0 +1,21 @@
+apiVersion: v2
+name: confida-integra
+description: |
+  SKELETON Helm chart for Confida Integra. NOT production-ready — minimal
+  templates and placeholder values only. The complete chart (collector workload,
+  PVCs, Secrets, ServiceAccount/RBAC, Route/Ingress) ships once the full
+  Kubernetes manifests land upstream.
+type: application
+version: 0.1.0
+appVersion: "0.9.6"
+home: https://confida.solutions
+sources:
+  - https://github.com/ConfidaSolutions/confida-integra
+maintainers:
+  - name: Confida Solutions Oy
+    email: info@confida.solutions
+keywords:
+  - integration
+  - cmdb
+  - openshift
+  - proxmox
