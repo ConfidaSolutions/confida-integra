@@ -4,11 +4,15 @@ Python client for the [Confida Integra](https://confida.solutions) northbound
 API — a read-only, paged, ETag-cached interface to a live register of OpenShift
 and Proxmox integrations.
 
-> **Availability.** The PyPI package name `confida-integra-client` and the
-> repository `github.com/ConfidaSolutions/confida-integra` are the intended
-> canonical locations; check the vendor site for live links.
-
 ## Install
+
+**Not on PyPI yet.** Until `0.1.0` is published, install from this repository:
+
+```bash
+pip install "git+https://github.com/ConfidaSolutions/confida-integra.git#subdirectory=sdk/python"
+```
+
+Once published, this becomes:
 
 ```bash
 pip install confida-integra-client

@@ -40,6 +40,6 @@ Initial public surface, published alongside the product's northbound API.
   system data model is finalised for external consumers.
 - TypeScript SDK; production-ready Helm chart.
 
-> **Names pending reservation.** `github.com/ConfidaSolutions/confida-integra`
-> and the PyPI package `confida-integra-client` are the intended canonical
-> names but may not be reserved at first publication.
+> **PyPI publication pending.** `github.com/ConfidaSolutions/confida-integra`
+> is the canonical repository. The package `confida-integra-client` is not on
+> PyPI yet; this entry is updated when `0.1.0` is uploaded.

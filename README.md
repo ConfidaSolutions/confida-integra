@@ -39,7 +39,7 @@ everything required to integrate, and nothing about the contracts is a secret.
 ## Quickstart (Python SDK)
 
 ```python
-pip install confida-integra-client          # see note on availability below
+pip install confida-integra-client          # not on PyPI yet - see note below
 
 from confida_integra import Client
 c = Client("https://your-host", token="cnf_v1_<id><secret>")
@@ -112,8 +112,7 @@ frameworks assessed against, controls that ship, known limitations — see
 
 ---
 
-> **Availability note.** The GitHub repository
-> (`github.com/ConfidaSolutions/confida-integra`) and the PyPI package
-> (`confida-integra-client`) names are the intended canonical locations but
-> may not be reserved yet at the time you read this. Check the vendor site for
-> the live links.
+> **Availability note.** This repository is the canonical one:
+> [`github.com/ConfidaSolutions/confida-integra`](https://github.com/ConfidaSolutions/confida-integra).
+> The PyPI package `confida-integra-client` is **not published yet** — until it
+> is, install the SDK from source (see [`sdk/python/`](sdk/python/)).

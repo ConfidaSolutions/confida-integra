@@ -1,1 +1,4 @@
+# Not on PyPI yet. Until confida-integra-client 0.1.0 is published, install the
+# SDK from this repository instead:
+#   pip install "git+https://github.com/ConfidaSolutions/confida-integra.git#subdirectory=sdk/python"
 confida-integra-client>=0.1.0
