@@ -1,0 +1,33 @@
+{
+  // markdownlint's defaults are a house style, and adopting a house style
+  // wholesale would mean reformatting every spec in the repository to satisfy
+  // rules that catch nothing. What is kept is the set that catches things a
+  // reader would actually notice: unlabelled code fences, headings and lists
+  // that run into surrounding text, files that do not start with a heading.
+  "config": {
+    "default": true,
+
+    // Prose here wraps at whatever width kept the tables and command lines
+    // readable, not at 80. Enforcing 80 would rewrap every spec file and
+    // improve nothing.
+    "MD013": false,
+
+    // Table pipe padding. The tables are written for the rendered output, and
+    // GitHub renders both styles identically.
+    "MD060": false,
+
+    // Bold used as a sub-heading inside a table cell or a definition list.
+    // Deliberate in the specs, where a real heading would break the structure.
+    "MD036": false,
+
+    // The specs quote OCP annotation keys and Proxmox note blocks inline;
+    // occasional raw HTML in the issue templates is GitHub's own syntax.
+    "MD033": false,
+
+    // GitHub supplies the title for an issue or a pull request, so its
+    // templates start at "##" by convention - a top-level heading there would
+    // render as a duplicate title. No other file in the repository lacks one.
+    "MD041": false
+  },
+  "globs": ["**/*.md", "!sdk/python/**", "!node_modules/**"]
+}

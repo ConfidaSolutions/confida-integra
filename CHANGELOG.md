@@ -17,6 +17,7 @@ versioning follows [Semantic Versioning](https://semver.org/) as scoped in
 Initial public surface, published alongside the product's northbound API.
 
 ### Added
+
 - **Metadata conventions** — `spec/metadata-conventions.md` (umbrella),
   `spec/ocp-label-convention.md` (OpenShift) and
   `spec/proxmox-metadata-convention.md` (Proxmox `confida` notes block + tags).
@@ -35,6 +36,7 @@ Initial public surface, published alongside the product's northbound API.
   `SECURITY.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`.
 
 ### Not yet included
+
 - **`/systems` endpoints** — present on the product but intentionally not part
   of this public contract yet; will be added as an additive MINOR once the
   system data model is finalised for external consumers.

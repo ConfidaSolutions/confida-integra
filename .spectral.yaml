@@ -1,0 +1,10 @@
+# Spectral needs a ruleset file; "spectral:oas" is the name of a built-in
+# ruleset to extend, not a path, and passing it to --ruleset makes Spectral look
+# for a file called ./spectral:oas and fail before it lints anything.
+extends: ["spectral:oas"]
+
+rules:
+  # Every operation carries a summary, which is what renders in a client. A
+  # separate long-form description on top of it would be duplicated prose in a
+  # contract whose whole point is being short enough to read.
+  operation-description: off

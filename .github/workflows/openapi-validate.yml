@@ -2,9 +2,9 @@ name: openapi-validate
 
 on:
   push:
-    paths: ["spec/openapi.yaml", ".github/workflows/openapi-validate.yml"]
+    paths: ["spec/openapi.yaml", ".spectral.yaml", ".github/workflows/openapi-validate.yml"]
   pull_request:
-    paths: ["spec/openapi.yaml", ".github/workflows/openapi-validate.yml"]
+    paths: ["spec/openapi.yaml", ".spectral.yaml", ".github/workflows/openapi-validate.yml"]
 
 jobs:
   spectral:
@@ -12,4 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Lint OpenAPI with Spectral
-        run: npx --yes @stoplight/spectral-cli lint spec/openapi.yaml --ruleset spectral:oas
+        # Ruleset comes from .spectral.yaml, which Spectral discovers on its
+        # own. Passing --ruleset spectral:oas made it look for a *file* of that
+        # name and fail before linting anything.
+        run: npx --yes @stoplight/spectral-cli lint spec/openapi.yaml

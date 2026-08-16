@@ -7,7 +7,7 @@ block to its **Notes** and a few **tags**. No agent, no application change.
 
 In the Proxmox UI (VM/CT → **Summary → Notes → Edit**), paste:
 
-````
+````text
 This VM hosts the billing→CRM bridge. Owned by the Integration Team.
 
 ```confida
@@ -35,7 +35,7 @@ parsed. (An un-fenced Notes field also works if it *starts* with
 Add tags for the filterable dimensions (Datacenter → the guest → Tags, or the
 chip editor). Order does not matter:
 
-```
+```text
 env-production;crit-high;integration;status-active
 ```
 

@@ -17,13 +17,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: yamllint
+        # Config lives in .yamllint.yml so a contributor gets the same result
+        # locally. Helm templates are excluded there: {{- ... }} is Go template
+        # syntax, not YAML, and no YAML parser can read them.
         run: |
           pip install yamllint
-          yamllint -d "{extends: relaxed, rules: {line-length: disable}}" spec charts examples
+          yamllint spec charts examples
 
   markdown:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: markdownlint
-        run: npx --yes markdownlint-cli2 "**/*.md" "#sdk/python/**"
+        # Globs and rules come from .markdownlint-cli2.jsonc, so `npx
+        # markdownlint-cli2` with no arguments is exactly what CI runs.
+        run: npx --yes markdownlint-cli2

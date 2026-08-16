@@ -73,7 +73,7 @@ place for decisions a future translator should keep:
 python validate.py de.json
 ```
 
-```
+```text
 de.json (Deutsch): 63% - 316/503 keys
   missing (187) - these render in English:
     admin.license_edition
@@ -128,7 +128,7 @@ that, you can still keep the pack privately in your own installation's
 
 Drop the file into your installation's mounted configuration directory:
 
-```
+```text
 config/i18n/de.json
 ```
 

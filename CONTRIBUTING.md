@@ -42,7 +42,7 @@ privately by Confida Solutions. That shapes what we can accept here.
 Contributions are accepted under the [Developer Certificate of
 Origin](https://developercertificate.org/). Sign off each commit:
 
-```
+```text
 git commit -s -m "Fix typo in proxmox convention"
 ```
 

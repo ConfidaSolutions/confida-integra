@@ -14,7 +14,7 @@ Put a fenced ` ```confida ` block in the guest's **Notes / Description**. It is
 parsed as simple `key: value` lines (the same vocabulary as the OpenShift
 annotations, minus the prefix):
 
-````
+````text
 ```confida
 app-type: integration
 source-system: billing-api
@@ -59,7 +59,7 @@ for filtering. Each is matched by convention prefix:
 Example tag string (Proxmox stores tags sorted alphabetically, which is fine —
 order is never significant):
 
-```
+```text
 crit-high;env-production;integration;status-active
 ```
 

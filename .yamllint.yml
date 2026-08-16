@@ -1,0 +1,9 @@
+extends: relaxed
+
+rules:
+  # The specs and chart values are written for readability, not for an 80-column
+  # terminal, and a wrapped OpenAPI description reads worse than a long one.
+  line-length: disable
+
+ignore: |
+  charts/*/templates/

@@ -15,7 +15,7 @@ python sync.py
 
 Output (stub):
 
-```
+```text
 # Confida Integra 0.9.6 (53 integrations, source=live)
 UPSERT {"external_id": "a1b2...", "source_system": "billing-api", "destination_system": "crm", ...}
 ...

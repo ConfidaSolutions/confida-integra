@@ -6,7 +6,7 @@ normalised into a single **`IntegrationNode`** record (see
 [`integration-node.schema.json`](integration-node.schema.json)), regardless of
 which source it came from.
 
-```
+```text
  OpenShift project (labels + annotations) ─┐
                                            ├─►  IntegrationNode  ─►  /api/v1/integrations
  Proxmox VM/CT  (confida notes + tags)  ───┘

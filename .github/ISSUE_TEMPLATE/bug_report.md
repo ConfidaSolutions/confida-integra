@@ -14,6 +14,7 @@ labels: bug
 **Expected vs actual**
 
 **Environment**
+
 - Component: <!-- sdk / spec / example / docs -->
 - SDK version (if applicable):
 - Python version (if applicable):
