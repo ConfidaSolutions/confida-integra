@@ -20,6 +20,10 @@
     // Deliberate in the specs, where a real heading would break the structure.
     "MD036": false,
 
+    // Keep a Changelog repeats "### Added" / "### Fixed" under every release.
+    // A duplicate heading only misleads a reader between siblings.
+    "MD024": { "siblings_only": true },
+
     // The specs quote OCP annotation keys and Proxmox note blocks inline;
     // occasional raw HTML in the issue templates is GitHub's own syntax.
     "MD033": false,

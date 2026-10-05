@@ -1,0 +1,794 @@
+{
+  "fingerprint_version": 1,
+  "spec": "fingerprint.md",
+  "component_order": [
+    "namespace",
+    "source_system",
+    "destination_system",
+    "data_model",
+    "protocol",
+    "environment",
+    "org"
+  ],
+  "hash": [
+    {
+      "name": "basic",
+      "note": "OpenShift-shaped reference integration; every component set.",
+      "components": [
+        "billing-sync",
+        "billing",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|billing|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "0e9ce633d2b74cbe"
+    },
+    {
+      "name": "optional-empty",
+      "note": "Only the namespace and both endpoints set; the other four are empty strings.",
+      "components": [
+        "hr-feed",
+        "hr",
+        "payroll",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "canonical": "hr-feed|hr|payroll||||",
+      "id": "4ec3807d3fe68b7d"
+    },
+    {
+      "name": "case-and-ascii-whitespace",
+      "note": "Canonicalises to exactly the input of 'basic'.",
+      "components": [
+        "  Billing-Sync ",
+        "BILLING",
+        "Crm\t",
+        " INVOICE",
+        "REST-JSON \u2192 SQL\n",
+        "Production",
+        "\rFinance"
+      ],
+      "canonical": "billing-sync|billing|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "0e9ce633d2b74cbe",
+      "equals": [
+        "basic"
+      ]
+    },
+    {
+      "name": "unicode-whitespace-stripped",
+      "note": "NBSP, NEL, EM SPACE, IDEOGRAPHIC SPACE and U+001F are all in the strip set.",
+      "components": [
+        "\u00a0billing-sync\u3000",
+        "billing\u2003",
+        "\u0085crm",
+        "Invoice\u001f",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|billing|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "0e9ce633d2b74cbe",
+      "equals": [
+        "basic"
+      ]
+    },
+    {
+      "name": "zero-width-not-stripped",
+      "note": "U+200B and U+FEFF are not whitespace in the strip set, so they are hashed.",
+      "components": [
+        "billing-sync\u200b",
+        "billing",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync\u200b|billing|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "3942d42c43698328",
+      "differs": [
+        "basic"
+      ]
+    },
+    {
+      "name": "bom-not-stripped",
+      "note": "A leading U+FEFF survives canonicalisation (unlike JavaScript's trim()).",
+      "components": [
+        "billing-sync",
+        "\ufeffbilling",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|\ufeffbilling|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "beb2099d29d0b691",
+      "differs": [
+        "basic"
+      ]
+    },
+    {
+      "name": "kubernetes-locator",
+      "note": "Kubernetes namespace component: kubernetes:<cluster>/<name>.",
+      "components": [
+        "kubernetes:prod-east/billing-sync",
+        "billing",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "kubernetes:prod-east/billing-sync|billing|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "247dbd2a8bd9a053",
+      "differs": [
+        "basic"
+      ]
+    },
+    {
+      "name": "proxmox-locator",
+      "note": "Proxmox namespace component: proxmox:<instance>/<vmid>.",
+      "components": [
+        "proxmox:pve-prod/101",
+        "billing",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "proxmox:pve-prod/101|billing|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "609b0b674619b7f5",
+      "differs": [
+        "basic"
+      ]
+    },
+    {
+      "name": "protocol-one-side",
+      "note": "Only one interface set: protocol is that interface alone.",
+      "components": [
+        "billing-sync",
+        "billing",
+        "crm",
+        "Invoice",
+        "sftp",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|billing|crm|invoice|sftp|production|finance",
+      "id": "36dcad0dbe3e2026"
+    },
+    {
+      "name": "data-model-spacing",
+      "note": "data_model is hashed verbatim; a space after the separator is a different id.",
+      "components": [
+        "billing-sync",
+        "billing",
+        "crm",
+        "HRModel; PersonModel",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|billing|crm|hrmodel; personmodel|rest-json \u2192 sql|production|finance",
+      "id": "ebcdc8152cf99e8c",
+      "differs": [
+        "data-model-compact"
+      ]
+    },
+    {
+      "name": "data-model-compact",
+      "note": "The same two data models without the space.",
+      "components": [
+        "billing-sync",
+        "billing",
+        "crm",
+        "HRModel;PersonModel",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|billing|crm|hrmodel;personmodel|rest-json \u2192 sql|production|finance",
+      "id": "a0785e62ad348046",
+      "differs": [
+        "data-model-spacing"
+      ]
+    },
+    {
+      "name": "turkish-dotted-capital-i",
+      "note": "U+0130 lowercases to two code points, U+0069 U+0307 (full mapping, no locale).",
+      "components": [
+        "billing-sync",
+        "\u0130zmir-ERP",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|i\u0307zmir-erp|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "d54edd5d8e29ade0"
+    },
+    {
+      "name": "greek-final-sigma",
+      "note": "Final_Sigma applies: the closing capital sigma becomes U+03C2, the others U+03C3.",
+      "components": [
+        "billing-sync",
+        "billing",
+        "\u03a3\u03a5\u03a3\u03a4\u0397\u039c\u0391\u03a3",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|billing|\u03c3\u03c5\u03c3\u03c4\u03b7\u03bc\u03b1\u03c2|invoice|rest-json \u2192 sql|production|finance",
+      "id": "24678c96d99f3fe6"
+    },
+    {
+      "name": "capital-sharp-s",
+      "note": "U+1E9E lowercases to U+00DF, not to 'ss'.",
+      "components": [
+        "billing-sync",
+        "GRO\u1e9eHANDEL",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|gro\u00dfhandel|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "80ef1cac7a064c80",
+      "equals": [
+        "sharp-s"
+      ],
+      "differs": [
+        "double-s"
+      ]
+    },
+    {
+      "name": "sharp-s",
+      "note": "Lowercase U+00DF is unchanged.",
+      "components": [
+        "billing-sync",
+        "Gro\u00dfhandel",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|gro\u00dfhandel|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "80ef1cac7a064c80",
+      "equals": [
+        "capital-sharp-s"
+      ]
+    },
+    {
+      "name": "double-s",
+      "note": "Lowercasing is not case folding: 'ss' and U+00DF stay distinct.",
+      "components": [
+        "billing-sync",
+        "GROSSHANDEL",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|grosshandel|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "6213413eca891883",
+      "differs": [
+        "sharp-s"
+      ]
+    },
+    {
+      "name": "precomposed-a-umlaut",
+      "note": "U+00E4 precomposed.",
+      "components": [
+        "billing-sync",
+        "K\u00e4ytt\u00e4j\u00e4rekisteri",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|k\u00e4ytt\u00e4j\u00e4rekisteri|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "9a1617a289c212bc",
+      "differs": [
+        "decomposed-a-umlaut"
+      ]
+    },
+    {
+      "name": "decomposed-a-umlaut",
+      "note": "U+0061 U+0308 decomposed: no Unicode normalisation, so a different id.",
+      "components": [
+        "billing-sync",
+        "Ka\u0308ytta\u0308ja\u0308rekisteri",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "canonical": "billing-sync|ka\u0308ytta\u0308ja\u0308rekisteri|crm|invoice|rest-json \u2192 sql|production|finance",
+      "id": "116064489a13abf7",
+      "differs": [
+        "precomposed-a-umlaut"
+      ]
+    },
+    {
+      "name": "pipe-in-source",
+      "note": "The separator is not escaped. Collides with 'pipe-in-destination' by design.",
+      "components": [
+        "ns",
+        "a|b",
+        "c",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "canonical": "ns|a|b|c||||",
+      "id": "499fd8655744dd6d",
+      "equals": [
+        "pipe-in-destination"
+      ]
+    },
+    {
+      "name": "pipe-in-destination",
+      "note": "See 'pipe-in-source'.",
+      "components": [
+        "ns",
+        "a",
+        "b|c",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "canonical": "ns|a|b|c||||",
+      "id": "499fd8655744dd6d",
+      "equals": [
+        "pipe-in-source"
+      ]
+    }
+  ],
+  "derive": [
+    {
+      "name": "openshift-full",
+      "note": "Every card field set; equals hash vector 'basic'.",
+      "source": "openshift",
+      "context": {
+        "prefix": "ict.example.org/",
+        "team": "integration"
+      },
+      "object": {
+        "metadata": {
+          "name": "billing-sync",
+          "labels": {
+            "ict.example.org/app-type": "integration",
+            "ict.example.org/team": "integration",
+            "ict.example.org/environment": "production",
+            "ict.example.org/org": "finance"
+          },
+          "annotations": {
+            "ict.example.org/source-system": "billing",
+            "ict.example.org/destination-system": "crm",
+            "ict.example.org/source-interface": "rest-json",
+            "ict.example.org/destination-interface": "sql",
+            "ict.example.org/data-models": "Invoice"
+          }
+        }
+      },
+      "components": [
+        "billing-sync",
+        "billing",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "id": "0e9ce633d2b74cbe"
+    },
+    {
+      "name": "openshift-other-prefix",
+      "note": "The label prefix is configuration, not input: same id as 'openshift-full'.",
+      "source": "openshift",
+      "context": {
+        "prefix": "acme.example.com/",
+        "team": "integration"
+      },
+      "object": {
+        "metadata": {
+          "name": "billing-sync",
+          "labels": {
+            "acme.example.com/app-type": "integration",
+            "acme.example.com/team": "integration",
+            "acme.example.com/environment": "production",
+            "acme.example.com/org": "finance"
+          },
+          "annotations": {
+            "acme.example.com/source-system": "billing",
+            "acme.example.com/destination-system": "crm",
+            "acme.example.com/source-interface": "rest-json",
+            "acme.example.com/destination-interface": "sql",
+            "acme.example.com/data-models": "Invoice"
+          }
+        }
+      },
+      "components": [
+        "billing-sync",
+        "billing",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "id": "0e9ce633d2b74cbe"
+    },
+    {
+      "name": "openshift-environment-inferred",
+      "note": "No environment label: inferred from the project name ('-test').",
+      "source": "openshift",
+      "context": {
+        "prefix": "ict.example.org/",
+        "team": "integration"
+      },
+      "object": {
+        "metadata": {
+          "name": "hr-feed-test",
+          "labels": {
+            "ict.example.org/app-type": "integration",
+            "ict.example.org/team": "integration"
+          },
+          "annotations": {
+            "ict.example.org/source-system": "hr",
+            "ict.example.org/destination-system": "payroll"
+          }
+        }
+      },
+      "components": [
+        "hr-feed-test",
+        "hr",
+        "payroll",
+        "",
+        "",
+        "test",
+        ""
+      ],
+      "id": "41565f01177afa94"
+    },
+    {
+      "name": "openshift-environment-whole-word",
+      "note": "Inference matches whole words: 'billing-devices' has no word 'dev'.",
+      "source": "openshift",
+      "context": {
+        "prefix": "ict.example.org/",
+        "team": "integration"
+      },
+      "object": {
+        "metadata": {
+          "name": "billing-devices",
+          "labels": {
+            "ict.example.org/app-type": "integration",
+            "ict.example.org/team": "integration"
+          },
+          "annotations": {
+            "ict.example.org/source-system": "billing",
+            "ict.example.org/destination-system": "crm"
+          }
+        }
+      },
+      "components": [
+        "billing-devices",
+        "billing",
+        "crm",
+        "",
+        "",
+        "production",
+        ""
+      ],
+      "id": "2cf886722f3e0c17"
+    },
+    {
+      "name": "openshift-environment-leading-word",
+      "note": "A marker word counts in any position, including the first.",
+      "source": "openshift",
+      "context": {
+        "prefix": "ict.example.org/",
+        "team": "integration"
+      },
+      "object": {
+        "metadata": {
+          "name": "dev-billing",
+          "labels": {
+            "ict.example.org/app-type": "integration",
+            "ict.example.org/team": "integration"
+          },
+          "annotations": {
+            "ict.example.org/source-system": "billing",
+            "ict.example.org/destination-system": "crm"
+          }
+        }
+      },
+      "components": [
+        "dev-billing",
+        "billing",
+        "crm",
+        "",
+        "",
+        "dev",
+        ""
+      ],
+      "id": "3af891ad71f16bea"
+    },
+    {
+      "name": "openshift-one-interface",
+      "note": "Only destination-interface set: protocol is that value alone.",
+      "source": "openshift",
+      "context": {
+        "prefix": "ict.example.org/",
+        "team": "integration"
+      },
+      "object": {
+        "metadata": {
+          "name": "docs-export",
+          "labels": {
+            "ict.example.org/app-type": "integration",
+            "ict.example.org/team": "integration",
+            "ict.example.org/environment": "production"
+          },
+          "annotations": {
+            "ict.example.org/source-system": "docs",
+            "ict.example.org/destination-system": "archive",
+            "ict.example.org/destination-interface": "sftp"
+          }
+        }
+      },
+      "components": [
+        "docs-export",
+        "docs",
+        "archive",
+        "",
+        "sftp",
+        "production",
+        ""
+      ],
+      "id": "9e0143b1cdba3a38"
+    },
+    {
+      "name": "openshift-interface-whitespace",
+      "note": "Interfaces are joined untrimmed; only the whole protocol is trimmed.",
+      "source": "openshift",
+      "context": {
+        "prefix": "ict.example.org/",
+        "team": "integration"
+      },
+      "object": {
+        "metadata": {
+          "name": "crm-load",
+          "labels": {
+            "ict.example.org/app-type": "integration",
+            "ict.example.org/team": "integration",
+            "ict.example.org/environment": "production"
+          },
+          "annotations": {
+            "ict.example.org/source-system": "crm",
+            "ict.example.org/destination-system": "warehouse",
+            "ict.example.org/source-interface": "rest ",
+            "ict.example.org/destination-interface": "sql"
+          }
+        }
+      },
+      "components": [
+        "crm-load",
+        "crm",
+        "warehouse",
+        "",
+        "rest  \u2192 sql",
+        "production",
+        ""
+      ],
+      "id": "72a9d76181aaac03"
+    },
+    {
+      "name": "kubernetes-full",
+      "note": "Same card as 'openshift-full' on a Kubernetes instance named 'prod-east'.",
+      "source": "kubernetes",
+      "context": {
+        "prefix": "ict.example.org/",
+        "team": "integration",
+        "cluster": "prod-east"
+      },
+      "object": {
+        "metadata": {
+          "name": "billing-sync",
+          "labels": {
+            "ict.example.org/app-type": "integration",
+            "ict.example.org/team": "integration",
+            "ict.example.org/environment": "production",
+            "ict.example.org/org": "finance"
+          },
+          "annotations": {
+            "ict.example.org/source-system": "billing",
+            "ict.example.org/destination-system": "crm",
+            "ict.example.org/source-interface": "rest-json",
+            "ict.example.org/destination-interface": "sql",
+            "ict.example.org/data-models": "Invoice"
+          }
+        }
+      },
+      "components": [
+        "kubernetes:prod-east/billing-sync",
+        "billing",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "id": "247dbd2a8bd9a053"
+    },
+    {
+      "name": "kubernetes-cluster-not-inferred",
+      "note": "Inference reads the namespace name only, never the cluster name.",
+      "source": "kubernetes",
+      "context": {
+        "prefix": "ict.example.org/",
+        "team": "integration",
+        "cluster": "lab-dev"
+      },
+      "object": {
+        "metadata": {
+          "name": "crm-sync-qa",
+          "labels": {
+            "ict.example.org/app-type": "integration",
+            "ict.example.org/team": "integration"
+          },
+          "annotations": {
+            "ict.example.org/source-system": "crm",
+            "ict.example.org/destination-system": "erp"
+          }
+        }
+      },
+      "components": [
+        "kubernetes:lab-dev/crm-sync-qa",
+        "crm",
+        "erp",
+        "",
+        "",
+        "qa",
+        ""
+      ],
+      "id": "0a68c720994055b5"
+    },
+    {
+      "name": "proxmox-notes-card",
+      "note": "Card in a fenced confida block in the guest's Notes, on Proxmox source 'pve-prod'.",
+      "source": "proxmox",
+      "context": {
+        "tag_prefix": "",
+        "instance": "pve-prod"
+      },
+      "resource": {
+        "vmid": 101,
+        "type": "qemu",
+        "name": "billing-vm",
+        "node": "pve1"
+      },
+      "config": {
+        "name": "billing-vm",
+        "tags": "integration",
+        "description": "```confida\napp-type: integration\nsource-system: billing\ndestination-system: crm\nsource-interface: rest-json\ndestination-interface: sql\ndata-models: Invoice\nenvironment: production\norg: finance\n```"
+      },
+      "components": [
+        "proxmox:pve-prod/101",
+        "billing",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "id": "609b0b674619b7f5"
+    },
+    {
+      "name": "proxmox-migrated",
+      "note": "The same guest after migrating to node pve2: the id does not change.",
+      "source": "proxmox",
+      "context": {
+        "tag_prefix": "",
+        "instance": "pve-prod"
+      },
+      "resource": {
+        "vmid": 101,
+        "type": "qemu",
+        "name": "billing-vm",
+        "node": "pve2"
+      },
+      "config": {
+        "name": "billing-vm",
+        "tags": "integration",
+        "description": "```confida\napp-type: integration\nsource-system: billing\ndestination-system: crm\nsource-interface: rest-json\ndestination-interface: sql\ndata-models: Invoice\nenvironment: production\norg: finance\n```"
+      },
+      "components": [
+        "proxmox:pve-prod/101",
+        "billing",
+        "crm",
+        "Invoice",
+        "rest-json \u2192 sql",
+        "production",
+        "finance"
+      ],
+      "id": "609b0b674619b7f5"
+    },
+    {
+      "name": "proxmox-environment-from-tag",
+      "note": "No environment in the card: the env- tag supplies it.",
+      "source": "proxmox",
+      "context": {
+        "tag_prefix": "",
+        "instance": "pve-prod"
+      },
+      "resource": {
+        "vmid": 202,
+        "node": "pve2",
+        "type": "lxc",
+        "name": "hr-ct"
+      },
+      "config": {
+        "hostname": "hr-ct",
+        "tags": "env-test;integration",
+        "description": "```confida\napp-type: integration\nsource-system: hr\ndestination-system: payroll\n```"
+      },
+      "components": [
+        "proxmox:pve-prod/202",
+        "hr",
+        "payroll",
+        "",
+        "",
+        "test",
+        ""
+      ],
+      "id": "ebe70a33808434b4"
+    },
+    {
+      "name": "proxmox-environment-default",
+      "note": "No environment anywhere: 'production'.",
+      "source": "proxmox",
+      "context": {
+        "tag_prefix": "",
+        "instance": "pve-prod"
+      },
+      "resource": {
+        "vmid": 303,
+        "node": "pve1",
+        "type": "qemu",
+        "name": "docs-vm"
+      },
+      "config": {
+        "name": "docs-vm",
+        "description": "```confida\napp-type: integration\nsource-system: docs\ndestination-system: archive\n```"
+      },
+      "components": [
+        "proxmox:pve-prod/303",
+        "docs",
+        "archive",
+        "",
+        "",
+        "production",
+        ""
+      ],
+      "id": "9edf8f6a9a82c3e1"
+    }
+  ]
+}

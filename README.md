@@ -26,6 +26,7 @@ everything required to integrate, and nothing about the contracts is a secret.
 | [`spec/ocp-label-convention.md`](spec/ocp-label-convention.md) | OpenShift label / annotation contract |
 | [`spec/proxmox-metadata-convention.md`](spec/proxmox-metadata-convention.md) | Proxmox `confida` notes block + tag contract |
 | [`spec/integration-node.schema.json`](spec/integration-node.schema.json) | JSON Schema (Draft 2020-12) for an integration record |
+| [`spec/fingerprint.md`](spec/fingerprint.md) | How an integration's `id` is computed, with [test vectors](spec/fingerprint-vectors.json) |
 | [`spec/openapi.yaml`](spec/openapi.yaml) | OpenAPI 3.1 spec for the northbound API (`/api/v1`) |
 | [`spec/versioning-policy.md`](spec/versioning-policy.md) | What counts as additive vs. breaking |
 | [`examples/curl/`](examples/curl/) | Copy-paste `curl` cookbook for the API |

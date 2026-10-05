@@ -40,10 +40,12 @@ prefix/packaging), so the mental model is identical across sources:
 
 - **`protocol`** is composed as `source-interface → destination-interface`; if
   only one side is set, it is used as-is.
-- **`id`** is a deterministic fingerprint of the integration's core attributes
-  (source, destination, data model, protocol, environment). Changing any of
-  those produces a *new* id — treat ids as stable only while those attributes
-  are unchanged.
+- **`id`** is a deterministic fingerprint of seven attributes: the namespace
+  locator, source and destination system, data model, protocol, environment
+  and org. Changing any of those produces a *new* id — treat ids as stable only
+  while those attributes are unchanged. The algorithm is published, with test
+  vectors, in [`fingerprint.md`](fingerprint.md), so a tool outside Integra can
+  compute the same id.
 - **`environment`** can be inferred from the namespace/name when not set
   explicitly; setting it explicitly is recommended.
 

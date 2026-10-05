@@ -12,6 +12,24 @@ versioning follows [Semantic Versioning](https://semver.org/) as scoped in
 
 ## [Unreleased]
 
+### Added
+
+- **`spec/fingerprint.md`** — the integration-id algorithm, published as
+  fingerprint version 1: the seven inputs and their order, canonicalisation
+  (the exact whitespace set and the Unicode lowercase mapping), separator,
+  hash and truncation, and how each source — OpenShift, Kubernetes, Proxmox —
+  derives the seven inputs from its metadata. Lets a tool outside Integra
+  compute ids that match the ones Integra observes.
+- **`spec/fingerprint-vectors.json`** — test vectors for the above, both for
+  the hash alone and from source objects through to the id. Generated from the
+  product's collector code and checked against it in every build.
+
+### Fixed
+
+- `spec/integration-node.schema.json` described `id` as a fingerprint of five
+  attributes; it is seven — the namespace locator and `org` were missing.
+  `kubernetes` added to the `source` examples.
+
 ## [0.1.0] — 2026-06-09
 
 Initial public surface, published alongside the product's northbound API.

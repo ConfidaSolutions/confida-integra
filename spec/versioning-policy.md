@@ -9,6 +9,8 @@ product: additive changes are common, breaking changes are rare and deliberate.
 
 - the metadata conventions (`spec/*-convention.md`),
 - `spec/integration-node.schema.json`,
+- the integration-id fingerprint (`spec/fingerprint.md` and its test vectors) —
+  any change that gives a different id for the same inputs is **MAJOR**,
 - `spec/openapi.yaml` (the `/api/v1` contract),
 - the public behaviour of the Python SDK (`sdk/python/`).
 
