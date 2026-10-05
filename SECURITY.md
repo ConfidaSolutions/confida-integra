@@ -6,8 +6,8 @@ to expect. It is the public mirror of the policy that ships with the product.
 
 > **Status — placeholder fields.** Lines marked **TODO** below are placeholders
 > awaiting vendor-side decisions (contact mailbox, PGP key, advisory channel,
-> response-time commitments). They will be replaced before the v1.0 GA. The
-> structure of this document is the version that ships.
+> response-time commitments). They will be replaced before the first commercial
+> release. The structure of this document is the version that ships.
 
 ---
 
@@ -69,7 +69,10 @@ EU Cyber Resilience Act, Regulation (EU) 2024/2847, Article 13(8)) is published
 on the vendor site; summarised here:
 
 - **Product-line commitment:** at least 5 years from the GA date of each major
-  version line (`1.x`, `2.x`, …).
+  version line. **GA is the line's first commercial release, not a particular
+  version number** — development builds before the first commercial release
+  carry no support commitment, whatever their number, including any `1.x` or
+  later.
 - **Rolling minor support:** within the active major line, only the **two most
   recent minor releases** receive fixes.
 - **Patch level:** fixes are released only against the **latest patch** of each
@@ -79,10 +82,10 @@ on the vendor site; summarised here:
 
 | Version line | Status | Receives security fixes? |
 |---|---|---|
-| `1.x` — latest two minors | Active rolling support | Yes |
-| `1.x` — older minors | EOL within line | No — upgrade to a supported minor |
-| `0.9.x` (current pre-GA) | Pre-GA active development | Yes — rolled into the next release |
-| ≤ `0.8.x` | End of life | No |
+| Commercial major line — latest two minors | Active rolling support (no commercial release yet; the first one opens the first line) | Yes |
+| Commercial major line — older minors | EOL within line | No — upgrade to a supported minor |
+| Current development build (before the first commercial release, any version number) | Active development; no support commitment | Fixes land in the next development build |
+| Earlier development builds | Superseded | No |
 
 Back-porting to unsupported versions is available only under a separate paid
 maintenance agreement — contact the address above.
